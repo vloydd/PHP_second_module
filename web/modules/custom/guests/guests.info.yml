@@ -1,0 +1,5 @@
+name: guests
+description: This Module Allows You to Create Some Reviews and Configure Them.
+type: module
+core_version_requirement: ^9.0
+package: vloyd

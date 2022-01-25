@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function guests_schema(): array {
+  $schema['guests'] = [
+    # Creates table
+    'description' => 'Table of Your Reviews',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'name' => [
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'phone' => [
+        'type' => 'varchar',
+        'length' => 13,
+        'not null' => TRUE,
+      ],
+      'review' => [
+        'type' => 'varchar',
+        'length' => 1023,
+        'not null' => TRUE,
+      ],
+      'avatar' => [
+        'type' => 'int',
+        'length' => 20,
+        'not null' => FALSE,
+      ],
+      'photo' => [
+        'type' => 'int',
+        'length' => 20,
+        'not null' => FALSE,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+  ];
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function guests_uninstall() {
+  # Remove table
+  \Drupal::state()->delete('guests.guests');
+}

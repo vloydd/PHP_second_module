@@ -1,0 +1,23 @@
+guests.main-page:
+  path: '/guests'
+  defaults:
+    _controller: '\Drupal\guests\Controller\GuestsPage::content'
+    _title: 'Guest Book Page'
+  requirements:
+    _permission: 'access content'
+
+guests.delete-form:
+  path: '/guests/{id}/delete'
+  defaults:
+    _form: '\Drupal\guests\Form\GuestsDelete'
+    _title: 'DeleteForm'
+  requirements:
+    _permission: 'administer site configuration'
+
+guests.edit-form:
+  path: '/guests/{id}/edit'
+  defaults:
+    _form: '\Drupal\guests\Form\GuestsEdit'
+    _title: 'EditForm'
+  requirements:
+    _permission: 'administer site configuration'

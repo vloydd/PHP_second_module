@@ -1,0 +1,47 @@
+{{ attach_library('guests/guests_libraries') }}
+<h2 class="form_message_intro">Heey! You Can Add Here Your Review!</h2>
+{{ form }}
+{% if guests %}
+  <h2 class="form_message_intro">Previous Reviews</h2>
+{% endif %}
+  <div class="guest_table-wrapper">
+    {% for items in guests %}
+      <div class="guest_table">
+        <div class="guest_table-basic">
+          <div class="guest_table-publishedByOn">
+            <p class="guest_table-publishedByOn-title">Published by: </p>
+              <ul class="guest_table-publishedByOn-list">
+                <li>
+                  <p class="guest_name guest_item">{{ items.name }}</p>
+                </li>
+                <li>
+                  <a class="guest_email guest_item" href="mailto:{{ items.email }}">{{ items.email }}</a>
+                </li>
+                <li>
+                  <a class="guest_phone guest_item" href="callto:{{ items.phone }}">{{ items.phone }}</a>
+                </li>
+              </ul>
+          </div>
+          {{ items.avatar }}
+          <div class="guest_table-publishedByOn">
+            <p class="guest_table-publishedByOn-title">Published On: </p>
+            <ul class="guest_table-publishedByOn-list">
+              <li><p class="guest_time guest_item">{{ items.time }}</p></li>
+            </ul>
+          </div>
+        </div>
+        <div class="guest_table-main">
+          <div class="guest_review-wrapper guest_item">
+            <p class="guest_review guest_review-item guest_item">{{ items.review }}</p>
+          </div>
+          <a class="vloyd_photo guest_item" target="_blank" href="{{ items.photo_url }}">{{ items.photo }}</a>
+        </div>
+        {% if user.hasPermission('administer nodes') %}
+          <div class="guest_table-edit-delete">
+            {{ items.edit }}
+            {{ items.delete }}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>

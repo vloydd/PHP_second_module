@@ -1,0 +1,8 @@
+guests_libraries:
+  css:
+    base:
+      css/style.css: {}
+guests:
+  dependencies:
+    - core/jquery
+    - core/ajax

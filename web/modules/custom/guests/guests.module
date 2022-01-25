@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function guests_theme($existing, $type, $theme, $path) {
+  return [
+    "guests-theme"=>[
+      "variables"=>[
+        'form' => [],
+        'guests' => [],
+      ]
+    ]
+  ];
+}
