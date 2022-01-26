@@ -44,6 +44,7 @@ class GuestsForm extends FormBase {
       '#placeholder' => $this->t("Enter Your Name"),
       '#required' => TRUE,
       '#wrapper_attributes' => ['class' => 'col-xs-12'],
+      '#maxlength' => 100,
       '#ajax' => [
         'callback' => '::validateFormAjaxName',
         'event' => 'change',
@@ -63,6 +64,7 @@ class GuestsForm extends FormBase {
       '#title' => $this->t('Email'),
       '#description' => $this->t('Only Alpha, ., _, - and @ Allowed'),
       '#placeholder' => $this->t("Enter Your Email"),
+      '#maxlength' => 100,
       '#ajax' => [
         'callback' => '::validateFormAjaxEmail',
         'event' => 'change',
@@ -82,6 +84,7 @@ class GuestsForm extends FormBase {
       '#title' => $this->t('Phone'),
       '#description' => $this->t('Only Numbers and +- are Allowed. MinLength - 7, MaxLength - 13'),
       '#placeholder' => $this->t("Enter Your Phone Number"),
+      '#maxlength' => 13,
       '#ajax' => [
         'callback' => '::validateFormAjaxPhone',
         'event' => 'change',
@@ -169,9 +172,12 @@ class GuestsForm extends FormBase {
     $requiers_name = "/[-_'A-Za-z0-9 ]/";
     $requiers_phone = '/[-_+0-9]/';
     $requiers_email = '/[-_@A-Za-z.]/';
-    $length_review = strlen($review);
+    $length_name = strlen($name);
     $length_email = strlen($email);
-    if (strlen($name) < 2) {
+    $length_phone = strlen($phone);
+    $length_review = strlen($review);
+
+    if ($length_name < 2) {
       $form_state->setErrorByName(
         'name',
         $this->t(
@@ -179,7 +185,7 @@ class GuestsForm extends FormBase {
         )
       );
     }
-    elseif (strlen($name) > 100) {
+    elseif ($length_name > 100) {
       $form_state->setErrorByName(
         'name',
         $this->t(
@@ -187,7 +193,7 @@ class GuestsForm extends FormBase {
         )
       );
     }
-    for ($i = 0; $i < (strlen($name)); $i++) {
+    for ($i = 0; $i < $length_name; $i++) {
       if (!preg_match($requiers_name, $name[$i])) {
         $form_state->setErrorByName('name',
           $this->t(
@@ -197,7 +203,7 @@ class GuestsForm extends FormBase {
       }
     }
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      for ($i = 0; $i < (strlen($email)); $i++) {
+      for ($i = 0; $i < $length_email; $i++) {
         if (!preg_match($requiers_email, $email[$i])) {
           $form_state->setErrorByName('email',
             $this->t(
@@ -212,11 +218,11 @@ class GuestsForm extends FormBase {
         'Mail: On No, Your Email is too Long. MaxLength - 255. Please, Cut it Off. Your Length: %length.',
         ['%length' => $length_email]));
     }
-    if ((strlen($phone) > 13 || strlen($phone) < 7) && (!strlen($phone) == 0)) {
+    if (($length_phone > 13 || $length_phone < 7) && (!$length_phone == 0)) {
       $form_state->setErrorByName('phone', $this->t('Phone: Oh No! Your Phone Number %phone is Invalid(. The Length: %length.',
         ['%phone' => $phone, '%length' => strlen($phone)]));
     }
-    for ($i = 0; $i < (strlen($phone)); $i++) {
+    for ($i = 0; $i < $length_phone; $i++) {
       if (!preg_match($requiers_phone, $phone[$i])) {
         $form_state->setErrorByName('phone', $this->t('Phone: Oh No! Your Phone Number %phone is Invalid(', ['%phone' => $phone]));
       }
@@ -233,7 +239,7 @@ class GuestsForm extends FormBase {
   }
 
   /**
-   * This func is for AJAX Redirect or Setting Errors.
+   * This func is for AJAX Redirect if Everything Fine or Setting Errors.
    *
    * @param array $form
    *   Comment smth.
@@ -268,10 +274,11 @@ class GuestsForm extends FormBase {
     $emptyname = empty($name);
     $response = new AjaxResponse();
     $lenName = strlen($name);
+    $length_name = strlen($name);
     $requiers_name = "/[-_'A-Za-z0-9 ]/";
-    if (($lenName > 100 || $lenName < 2) && $lenName != 0) {
+    if (($length_name > 100 || $length_name < 2) && $length_name != 0) {
       $message = $this->t('Name: Oh No! Your Name %name  Have False Length. The Length: %length.',
-        ['%name' => $name, '%length' => strlen($name)]);
+        ['%name' => $name, '%length' => $length_name]);
       $response->addCommand(
         new HtmlCommand(
           '.false_name',
@@ -280,7 +287,7 @@ class GuestsForm extends FormBase {
       );
       return $response;
     }
-    for ($i = 0; $i < (strlen($name)); $i++) {
+    for ($i = 0; $i < $length_name; $i++) {
       if (!preg_match($requiers_name, $name[$i])) {
         $message = $this->t("Name: Oh No! Your Name %name is Invalid(. You Should Use A-z, 0-9, and special symbols (-_').", ['%name' => $name]);
         $response->addCommand(
@@ -302,7 +309,7 @@ class GuestsForm extends FormBase {
         return $response;
       }
     }
-    if ((strlen($name) == 0) || ($emptyname) || ($lenName <= 100 && $lenName >= 2)) {
+    if (($length_name == 0) || ($emptyname) || ($length_name <= 100 && $length_name >= 2)) {
       $message = '';
       $response->addCommand(
         new HtmlCommand(
@@ -408,7 +415,8 @@ class GuestsForm extends FormBase {
     $emptyphone = empty($phone);
     $response = new AjaxResponse();
     $requiers = '/[-+0-9]/';
-    if ((strlen($phone) != 0)) {
+    $length_phone = strlen($phone);
+    if ($length_phone != 0) {
       if ($phone[0] != '+') {
         $message = $this->t("Phone: Pal, You Should Start to Enter a Phone Number with '+'. %phone is Invalid(", ['%phone' => $phone]);
         $response->addCommand(
@@ -419,7 +427,7 @@ class GuestsForm extends FormBase {
         );
         return $response;
       }
-      if ((strlen($phone) > 13 || strlen($phone) < 7) && (strlen($phone) != 0)) {
+      if (($length_phone > 13 || $length_phone < 7) && ($length_phone != 0)) {
         $message = $this->t('Phone: Oh No! Your Phone Number %phone is Invalid(. The Length: %length, and it Should Be in Range (7-13).',
           ['%phone' => $phone, '%length' => strlen($phone)]);
         $response->addCommand(
@@ -430,7 +438,7 @@ class GuestsForm extends FormBase {
         );
         return $response;
       }
-      for ($i = 0; $i < (strlen($phone)); $i++) {
+      for ($i = 0; $i < $length_phone; $i++) {
         if (!preg_match($requiers, $phone[$i])) {
           $message = $this->t('Phone: Oh No! Your Phone Number %phone is Invalid(', ['%phone' => $phone]);
           $response->addCommand(
