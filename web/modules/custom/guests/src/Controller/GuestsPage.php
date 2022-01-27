@@ -58,8 +58,8 @@ class GuestsPage extends ControllerBase {
         $avatar_url = \Drupal::service('file_url_generator')->generateAbsoluteString($avatar_uri);
       }
       else {
-        $avatar_uri = '/sites/default/files/guests_photos/avatars/default_5.png';
-        $avatar_url = 'http://two.docksal/sites/default/files/guests_photos/avatars/default_5.png';
+        $avatar_uri = '/modules/custom/guests/file/default.png';
+        $avatar_url = 'http://two.docksal/modules/custom/guests/file/default.png';
       }
       if ($data->photo != NULL) {
         $photo_file = File::load($data->photo);
