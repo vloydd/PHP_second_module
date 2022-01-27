@@ -6,7 +6,6 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element\Ajax;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 
@@ -19,17 +18,17 @@ class GuestsEdit extends GuestsForm {
    *
    * @var int
    */
-  public $id;
+  public int $id;
 
   /**
-   * {@inheritdoc}
+   * This Func is for Getting ID of Our Guest Edit Form.
    */
   public function getFormId() :string {
     return 'guests_edit';
   }
 
   /**
-   * {@inheritdoc}
+   * This Func is for Building Our Guest Edit Form.
    */
   public function buildForm(array $form, FormStateInterface $form_state, $id = NULL): array {
     $this->id = \Drupal::routeMatch()->getParameter('id');
@@ -41,7 +40,6 @@ class GuestsEdit extends GuestsForm {
         ->fields('g');
       $data = $query->execute()->fetchAssoc();
     }
-
     $form = parent::buildForm($form, $form_state);
     $form['#prefix'] = '<div id="form-edit-wrapper" class="col-xs-12 ml-auto mr-auto">';
     $form['name']['#default_value'] = (isset($data['name'])) ? $data['name'] : '';
@@ -69,9 +67,9 @@ class GuestsEdit extends GuestsForm {
   }
 
   /**
-   *
+   * This Func is for Setting Redirect after We Clicked Cancel.
    */
-  public function setCancel(array &$form, FormStateInterface $form_state) {
+  public function setCancel(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $url = Url::fromRoute('guests.main-page');
     $command = new RedirectCommand($url->toString());
