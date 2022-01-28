@@ -18,7 +18,7 @@ class GuestsForm extends FormBase {
   /**
    * This func is for Getting ID of Our Adding Guest Form.
    */
-  public function getFormId() {
+  public function getFormId():string {
     return 'guest_form';
   }
 
@@ -273,7 +273,6 @@ class GuestsForm extends FormBase {
     $name = $form_state->getValue('name');
     $emptyname = empty($name);
     $response = new AjaxResponse();
-    $lenName = strlen($name);
     $length_name = strlen($name);
     $requiers_name = "/[-_'A-Za-z0-9 ]/";
     if (($length_name > 100 || $length_name < 2) && $length_name != 0) {
@@ -485,7 +484,7 @@ class GuestsForm extends FormBase {
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   Comment smth.
    */
-  public function validateFormAjaxReview(array &$form, FormStateInterface $form_state): AjaxResponse {
+  public function validateFormAjaxReview(array $form, FormStateInterface $form_state): AjaxResponse {
 
     $review = $form_state->getValue('review');
     $emptyreview = empty($review);
@@ -513,7 +512,7 @@ class GuestsForm extends FormBase {
       );
       return $response;
     }
-    if ($length_review < 1023 && ($length_review != 0)) {
+    if ($length_review > 0 && $length_review < 1023) {
       $message = '';
       $response->addCommand(
         new HtmlCommand(
@@ -528,6 +527,9 @@ class GuestsForm extends FormBase {
 
   /**
    * This Func is for Submitting Our Form.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Exception
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $name = $form_state->getValue('name');

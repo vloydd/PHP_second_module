@@ -8,7 +8,7 @@
     {% for items in guests %}
       <div class="guest_table">
         <div class="guest_table-basic">
-          <div class="guest_table-publishedByOn">
+          <div class="guest_table-publishedByOn guest_table-author">
             <p class="guest_table-publishedByOn-title">Published by: </p>
               <ul class="guest_table-publishedByOn-list">
                 <li>
@@ -23,7 +23,7 @@
               </ul>
           </div>
           {{ items.avatar }}
-          <div class="guest_table-publishedByOn">
+          <div class="guest_table-publishedByOn guest_table-authored">
             <p class="guest_table-publishedByOn-title">Published On: </p>
             <ul class="guest_table-publishedByOn-list">
               <li><p class="guest_time guest_item">{{ items.time }}</p></li>
@@ -34,7 +34,7 @@
           <div class="guest_review-wrapper guest_item">
             <p class="guest_review guest_review-item guest_item">{{ items.review }}</p>
           </div>
-          <a class="vloyd_photo guest_item" target="_blank" href="{{ items.photo_url }}">{{ items.photo }}</a>
+          <a class="guest_photo guest_item" target="_blank" href="{{ items.photo_url }}">{{ items.photo }}</a>
         </div>
         {% if user.hasPermission('administer nodes') %}
           <div class="guest_table-edit-delete">

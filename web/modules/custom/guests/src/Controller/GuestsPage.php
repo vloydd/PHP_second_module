@@ -12,6 +12,14 @@ use Drupal\file\Entity\File;
 class GuestsPage extends ControllerBase {
 
   /**
+   * Let's Take an ID.
+   *
+   * @var int
+   * It's Our Identifier.
+   */
+  protected $id;
+
+  /**
    * This func shows our content.
    *
    * @return array
@@ -50,7 +58,6 @@ class GuestsPage extends ControllerBase {
     $query->orderBy('g.timestamp', 'DESC');
     $results = $query->execute()->fetchAll();
     $guests = [];
-    $guests_list = [];
     foreach ($results as $data) {
       if ($data->avatar != NULL) {
         $avatar_file = File::load($data->avatar);

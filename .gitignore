@@ -8,3 +8,4 @@ web/profiles/contrib/
 web/themes/**/node_modules/
 web/themes/custom/
 /.docksal/
+
